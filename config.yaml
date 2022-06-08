@@ -1,0 +1,3 @@
+generatorName: "protobuf-schema"
+outputDir : "./src/main/protobuf"
+generatorLanguage: "protobuf"

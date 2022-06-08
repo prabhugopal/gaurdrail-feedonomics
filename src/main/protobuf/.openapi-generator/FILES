@@ -1,0 +1,4 @@
+.openapi-generator-ignore
+README.md
+models/bigcommerce_account_body.proto
+services/default_service.proto

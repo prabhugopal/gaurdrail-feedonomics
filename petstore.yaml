@@ -1,0 +1,2178 @@
+---
+openapi: 3.0.0
+info:
+  title: 'Feedonomics: API Documentation'
+  description: Feedonomics documentation
+  version: "2"
+servers:
+  - url: https://meta.feedonomics.com/api.php
+tags:
+  - name: Authentication
+  - name: Accounts
+  - name: Database
+  - name: DBGroups
+  - name: Transformers
+  - name: Imports
+  - name: Exports
+  - name: Data
+paths:
+#  /login:
+#    post:
+#      tags:
+#        - Authentication
+#      summary: Generates an authentication token. The token must be sent with the x-api-key header for all authenticated requests
+#      requestBody:
+#        description: The username/email for the account
+#        content:
+#          text/plain:
+#            schema:
+#              $ref: '#/components/schemas/login_body'
+#        required: true
+#      responses:
+#        "200":
+#          description: successful operation
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                status: success
+#                token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNzQifQ.H9Xrm7x1w3SldB9gUVShNquN9xdGK6qYivUB2G2xYWU
+#  /user/accounts:
+#    get:
+#      tags:
+#        - Accounts
+#      summary: Retrieves a list of accounts for a user
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: successful operation
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/inline_response_200'
+#              example:
+#                - id: "73"
+#                  account_name: admin
+#                  highest_permission: primary
+#                  lowest_permission: primary
+#                  account_access_flag: "1"
+#                - id: "74"
+#                  account_name: Account 1
+#                  highest_permission: primary
+#                  lowest_permission: primary
+#                  account_access_flag: "1"
+#                - id: "75"
+#                  account_name: Account 2
+#                  highest_permission: primary
+#                  lowest_permission: primary
+#                  account_access_flag: "1"
+  /bigcommerce/account:
+    post:
+      operationId: postAccount
+      x-scala-package: accounts
+      summary: Create a new account under the BigCommerce User
+      parameters:
+        - name: x-api-key
+          in: header
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: The account parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bigcommerce_account_body'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+#  /accounts/{account_id}/dbs:
+#    get:
+#      operationId: getDatabases
+#      x-scala-package: database
+#      summary: Retrieves a list of databases for an account
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: account_id
+#          in: path
+#          description: ID of the account that the database is added to
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      responses:
+#        "200":
+#          description: successful operation
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/bigcommerce_account_body'
+#              example:
+#                - account_id: "73"
+#                  id: "1"
+#                  name: db one
+#                  paused: "0"
+#                  google_service_account_id: "0"
+#                  privacy_level: admin
+#                  permissions: write
+#                  scheduled_exports: 0
+#                  scheduled_imports: 0
+#                  trigger_count: 0
+#                  number_exported_in_last_day: 0
+#                  search_index: ""
+#                  db_group_id: 0
+#                  db_group_name: Ungrouped
+#                  db_group_sort_weight: ~~~
+#                - account_id: "73"
+#                  id: "130"
+#                  name: DATACEST_localhost_1631824972
+#                  paused: "0"
+#                  google_service_account_id: "0"
+#                  privacy_level: admin
+#                  permissions: write
+#                  scheduled_exports: 0
+#                  scheduled_imports: 0
+#                  trigger_count: 0
+#                  number_exported_in_last_day: 0
+#                  search_index: ',feed.csv,,kijiji_export.csv'
+#                  db_group_id: 0
+#                  db_group_name: Ungrouped
+#                  db_group_sort_weight: ~~~
+#    post:
+#      operationId: postDatabase
+#      x-scala-package: database
+#      summary: Add a new database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: account_id
+#          in: path
+#          description: ID of the account that the database is added to
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      requestBody:
+#        description: The database parameters
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/account_id_dbs_body'
+#        required: true
+#      responses:
+#        "200":
+#          description: successful operation
+#  /accounts/{account_id}/db_groups:
+#    get:
+#      tags:
+#        - DBGroups
+#      summary: Retrieves a list of database groups for an account
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: account_id
+#          in: path
+#          description: ID of the account that the database is added to
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      responses:
+#        "200":
+#          description: successful operation
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                - id: "0"
+#                  name: Ungrouped
+#                  sort_weight: ~~~
+#                - id: 1
+#                  name: Test Group
+#                  sort_weight: testgroup
+#  /dbs/{db_id}:
+#    get:
+#      tags:
+#        - Database
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Get single DB
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                id: "1"
+#                name: db one
+#                user_id: "74"
+#                account_id: "73"
+#                import_running: "0"
+#                export_running: "0"
+#                paused: "0"
+#                visibility: "1"
+#                oauth_id: "0"
+#                email_address: ""
+#                google_account_id: ""
+#                google_account_name: ""
+#                google_analytics_oauth_id: "0"
+#                google_analytics_profile_id: ""
+#                amazon_seller_id: ""
+#                amazon_marketplace_id: ""
+#                amazon_mws_auth_token: ""
+#                bing_oauth_id: "0"
+#                bing_shopping_account_id: ""
+#                bing_shopping_campaign_id: ""
+#                polyvore_username: ""
+#                polyvore_password: ""
+#                polyvore_campaign_id: ""
+#                external_id: ""
+#                time: 2021-09-16 17:46:47
+#                feedonomics_auth_token: cce3ddc6fbcf2ea7d4d3931c8d8821af4dcb666d401cdce643c699d4beb76895
+#                manual_billing_exclusion: "0"
+#                google_merchant_center_oauth_id: ""
+#                google_merchant_center_account_id: ""
+#                google_my_business_oauth_id: ""
+#                timestamp: 2021-09-16 17:48:21
+#                billing_parent_id: "0"
+#                sears_email: ""
+#                sears_seller_id: ""
+#                sears_secret_key: ""
+#                walmart_private_key: ""
+#                walmart_consumer_id: ""
+#                kijiji_oauth_id: "0"
+#                mercado_libre_client_id: ""
+#                mercado_libre_client_secret: ""
+#                mercado_libre_oauth_id: "0"
+#                mercado_libre_country: ""
+#                google_sheets_oauth_id: "0"
+#                shopify_oauth_id: "0"
+#                facebook_oauth_id: "0"
+#                facebook_page_id: ""
+#                facebook_cms_id: ""
+#                character_set: utf8
+#                host: 127.0.0.1
+#                scheduler_host: localhost
+#                feed_report_host: 127.0.0.1
+#                cxn_id: "301"
+#                run_import_id: 6b75de51ce790807
+#                data_count: "14139"
+#                google_service_account_id: "0"
+#                woocommerce_oauth_id: "0"
+#                bigcommerce_oauth_id: "0"
+#                etsy_oauth_id: "0"
+#                empty_exports_on_data_refresh_failures: "0"
+#                last_run_imports_status: success
+#                wish_oauth_id: "0"
+#                created_at: 2021-09-16 17:46:47
+#                deleted_at: 0000-00-00 00:00:00
+#                features: []
+#                db_group_id: 0
+#                default_db_group_id: 0
+#    delete:
+#      tags:
+#        - Database
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Delete DB
+#  /dbs/{db_id}/extra_import_fields:
+#    get:
+#      tags:
+#        - Database
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Gets a list of extra import fields
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                - extra_01
+#                - misc_02
+#    put:
+#      tags:
+#        - Database
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/db_id_extra_import_fields_body'
+#      responses:
+#        "200":
+#          description: Gets a list of extra import fields
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                - extra_01
+#                - misc_02
+#        "400":
+#          description: Fail response
+#          content:
+#            application/json:
+#              schema: {}
+#              example: We cannot submit this file map right now. A download or export for this database is currently running. Please try again when these operations have concluded.
+#  /dbs/{db_id}/imports:
+#    get:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Get imports for DB
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                - id: "1"
+#                  db_id: "1"
+#                  name: import one
+#                  status: "0"
+#                  file_location: local
+#                  file_type: delimited
+#                  file_map:
+#                    encoding: ""
+#                    separator: ','
+#                    enclosure: ""
+#                    escaper: ""
+#                    maps:
+#                      id: id
+#                      tags: tags
+#                      row: row
+#                      image_link: image_link
+#                  join_type: product_feed
+#                  running: "0"
+#                  cxn_id: "0"
+#                  name_based_maps: "1"
+#                  xml_force_parse: "0"
+#                  force_encoding: "0"
+#                  timestamp: 0000-00-00 00:00:00
+#                  ignore_lines: "1"
+#                  load_threshold: "1"
+#                  update_threshold: "1"
+#                  max_attempts: "1"
+#                  time_between_attempts: "1"
+#                  limits: ""
+#                  backup_failures: "0"
+#                  last_download_time: 2021-09-16 17:48:07
+#                  last_backup_time: 0000-00-00 00:00:00
+#                  needs_backup: "1"
+#                  xmlreader: "0"
+#                  clean_file_headers: "0"
+#                  download_activity_timeout: "0"
+#                  timeout: "900"
+#                  last_download_status: ""
+#                  ftp_allow_minio_direct: "0"
+#                  use_download_refactor: "1"
+#                  created_at: 2021-09-16 17:48:06
+#                  tags:
+#                    platform: Not Applicable
+#    post:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        description: Create Import
+#        content:
+#          application/json:
+#            schema:
+#              required:
+#                - file_name
+#                - join_type
+#                - name
+#                - tags
+#            examples:
+#              url:
+#                summary: url
+#                value:
+#                  name: new url
+#                  join_type: product_feed
+#                  file_location: url
+#                  tags:
+#                    platform: BigCommerce
+#                  timeout: 900
+#                  url: https://google.com/file.txt
+#                  CURLOPT_USERAGENT: Google
+#              ftp:
+#                summary: ftp
+#                value:
+#                  name: new ftp
+#                  join_type: product_feed
+#                  file_location: ftp
+#                  tags:
+#                    platform: BigCommerce
+#                  timeout: 900
+#                  file_name: filename.txt
+#                  host: host.com
+#                  username: username
+#                  password: password
+#                  protocol: ftp
+#      responses:
+#        "200":
+#          description: Import Created
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                id: "135"
+#                db_id: "132"
+#                name: ftp
+#                status: "0"
+#                file_location: preprocess_script
+#                import_info:
+#                  url: https:\/\/haproxy-preprocess.feedonomics.com\/preprocess\/run_preprocess.php?connection_info%5Bprotocol%5D=ftp&connection_info%5Bhost%5D=ftp2.feedonomics.com&connection_info%5Busername%5D=9c62fc319543&connection_info%5Bpassword%5D=68c07d24ab8bc8f2db143864&file_info%5Brequest_type%5D=get&file_info%5Bfile_type_name%5D=File%20Name&file_info%5Bclean_ftp%5D=false&file_info%5Bdirectory%5D=%2FFEED110&file_info%5Bfilename%5D=1_import_practical.txt&
+#                  CURLOPT_USERAGENT: ""
+#                  preprocess_info:
+#                    connection_info:
+#                      protocol: ftp
+#                      host: ftp2.feedonomics.com
+#                      username: "9"
+#                      password: "68"
+#                    file_info:
+#                      request_type: get
+#                      file_type_name: File Name
+#                      clean_ftp: false
+#                      directory: \/FEED110
+#                      filename: 1_import_practical.txt
+#                      file_match: ""
+#                      keep_files_count: ""
+#                    actions: []
+#                file_type: delimited
+#                file_map:
+#                  encoding: ""
+#                  separator: \\t
+#                  enclosure: ""
+#                  escaper: ""
+#                  maps:
+#                    id: id
+#                    title: title
+#                    body-html: body_html
+#                line_terminator: \\r\\n
+#                join_type: product_feed
+#                running: "0"
+#                cxn_id: "23935"
+#                name_based_maps: "1"
+#                xml_force_parse: "0"
+#                force_encoding: "0"
+#                timestamp: 2021-09-22 16:35:55
+#                ignore_lines: "1"
+#                load_threshold: "1"
+#                update_threshold: "1"
+#                max_attempts: "1"
+#                time_between_attempts: "1"
+#                limits: ""
+#                backup_failures: "0"
+#                last_download_time: 2021-09-22 16:35:56
+#                last_backup_time: 0000-00-00 00:00:00
+#                needs_backup: "1"
+#                xmlreader: "0"
+#                clean_file_headers: "0"
+#                download_activity_timeout: "0"
+#                timeout: "900"
+#                last_download_status: success
+#                ftp_allow_minio_direct: "0"
+#                use_download_refactor: "1"
+#                created_at: 2021-09-22 16:19:38
+#  /dbs/{db_id}/imports/{import_id}:
+#    get:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: import_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Get Import by ID
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                id: "135"
+#                db_id: "132"
+#                name: ftp
+#                status: "0"
+#                file_location: preprocess_script
+#                import_info:
+#                  url: https:\/\/haproxy-preprocess.feedonomics.com\/preprocess\/run_preprocess.php?connection_info%5Bprotocol%5D=ftp&connection_info%5Bhost%5D=ftp2.feedonomics.com&connection_info%5Busername%5D=9c62fc319543&connection_info%5Bpassword%5D=68c07d24ab8bc8f2db143864&file_info%5Brequest_type%5D=get&file_info%5Bfile_type_name%5D=File%20Name&file_info%5Bclean_ftp%5D=false&file_info%5Bdirectory%5D=%2FFEED110&file_info%5Bfilename%5D=1_import_practical.txt&
+#                  CURLOPT_USERAGENT: ""
+#                  preprocess_info:
+#                    connection_info:
+#                      protocol: ftp
+#                      host: ftp2.feedonomics.com
+#                      username: "9"
+#                      password: "68"
+#                    file_info:
+#                      request_type: get
+#                      file_type_name: File Name
+#                      clean_ftp: false
+#                      directory: \/FEED110
+#                      filename: 1_import_practical.txt
+#                      file_match: ""
+#                      keep_files_count: ""
+#                    actions: []
+#                file_type: delimited
+#                file_map:
+#                  encoding: ""
+#                  separator: \\t
+#                  enclosure: ""
+#                  escaper: ""
+#                  maps:
+#                    id: id
+#                    title: title
+#                    body-html: body_html
+#                line_terminator: \\r\\n
+#                join_type: product_feed
+#                running: "0"
+#                cxn_id: "23935"
+#                name_based_maps: "1"
+#                xml_force_parse: "0"
+#                force_encoding: "0"
+#                timestamp: 2021-09-22 16:35:55
+#                ignore_lines: "1"
+#                load_threshold: "1"
+#                update_threshold: "1"
+#                max_attempts: "1"
+#                time_between_attempts: "1"
+#                limits: ""
+#                backup_failures: "0"
+#                last_download_time: 2021-09-22 16:35:56
+#                last_backup_time: 0000-00-00 00:00:00
+#                needs_backup: "1"
+#                xmlreader: "0"
+#                clean_file_headers: "0"
+#                download_activity_timeout: "0"
+#                timeout: "900"
+#                last_download_status: success
+#                ftp_allow_minio_direct: "0"
+#                use_download_refactor: "1"
+#                created_at: 2021-09-22 16:19:38
+#    post:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: import_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        description: Updates import
+#        content:
+#          application/json:
+#            schema:
+#              required:
+#                - file_name
+#                - join_type
+#                - name
+#                - tags
+#            examples:
+#              big_commerce:
+#                summary: big_commerce
+#                value:
+#                  name: bigcommerce
+#                  join_type: product_feed
+#                  file_location: preprocess_script
+#                  tags:
+#                    platform: Bigcommerce
+#                  preprocess_info:
+#                    connection_info:
+#                      client: bigcommerce
+#                      protocol: api
+#                      access_token: token
+#                      client_id: id
+#                      store_hash: hash
+#                      store_url: https://feedonomicssandbox.mybigcommerce.com
+#                      additional_options: product_reviews,product_metafields,google_fields,complex_rules,category_tree,category_metafields,variant_metafields
+#                      additional_image_sizes: true
+#                    file_info:
+#                      request_type: get
+#                    actions: []
+#                  url: https://haproxy-preprocess.feedonomics.com/preprocess/run_preprocess.php?connection_info%5Bclient%5D=bigcommerce&connection_info%5Bprotocol%5D=api&connection_info%5Baccess_token%5D=5zvihq3fvya80cf42vnk5a6i66uogai&connection_info%5Bclient_id%5D=ca0eb7o90jh4s9jdsfs4hj55xn6j6yu&connection_info%5Bstore_hash%5D=3vc7ancyqo&connection_info%5Bstore_url%5D=https%3A%2F%2Ffeedonomicssandbox.mybigcommerce.com&connection_info%5Badditional_options%5D=product_reviews%2Cproduct_metafields%2Cgoogle_fields%2Ccomplex_rules%2Ccategory_tree%2Ccategory_metafields%2Cvariant_metafields&connection_info%5Badditional_image_sizes%5D=true&file_info%5Brequest_type%5D=get&
+#              ftp:
+#                summary: ftp
+#                value:
+#                  name: ftp
+#                  join_type: product_feed
+#                  file_location: preprocess_script
+#                  tags:
+#                    platform: Not Applicable
+#                  preprocess_info:
+#                    connection_info:
+#                      protocol: ftp
+#                      host: ftp2.feedonomics.com
+#                      username: username
+#                      password: password
+#                    file_info:
+#                      request_type: get
+#                      file_type_name: File Name
+#                      clean_ftp: false
+#                      directory: /FEED110
+#                      filename: 1_import_practical.txt
+#                      file_match: ""
+#                      keep_files_count: ""
+#                    actions:
+#                      - id: remove_bad_characters
+#                        options: 1
+#                  url: https://haproxy-preprocess.feedonomics.com/preprocess/run_preprocess.php?connection_info%5Bprotocol%5D=ftp&connection_info%5Bhost%5D=ftp2.feedonomics.com&connection_info%5Busername%5D=9c62fc319543&connection_info%5Bpassword%5D=68c07d24ab8bc8f2db143864&file_info%5Brequest_type%5D=get&file_info%5Bfile_type_name%5D=File%20Name&file_info%5Bclean_ftp%5D=false&file_info%5Bdirectory%5D=%2FFEED110&file_info%5Bfilename%5D=1_import_practical.txt&actions%5Bremove_bad_characters%5D=1
+#      responses:
+#        "200":
+#          description: Imported Updated
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                id: "138"
+#                db_id: "136"
+#                name: bigcommerce
+#                status: "0"
+#                file_location: preprocess_script
+#                file_type: delimited
+#                join_type: product_feed
+#                running: "0"
+#                cxn_id: "10726"
+#                name_based_maps: "1"
+#                xml_force_parse: "0"
+#                force_encoding: "0"
+#                timestamp: 2021-11-15 16:45:47
+#                ignore_lines: "1"
+#                load_threshold: "1"
+#                update_threshold: "1"
+#                max_attempts: "1"
+#                time_between_attempts: "1"
+#                limits: ""
+#                backup_failures: "0"
+#                last_download_time: 2021-09-27 18:31:51
+#                last_backup_time: 0000-00-00 00:00:00
+#                needs_backup: "1"
+#                xmlreader: "0"
+#                clean_file_headers: "0"
+#                download_activity_timeout: "0"
+#                timeout: "1800"
+#                last_download_status: fail
+#                last_download_size: "0"
+#                ftp_allow_minio_direct: "0"
+#                use_download_refactor: "1"
+#                created_at: 2021-09-27 18:31:50
+#        "400":
+#          description: Fail response
+#          content:
+#            application/json:
+#              schema: {}
+#              example: We cannot download this file right now. This download, a database import, or an export is currently running. Please try again when these operations have concluded.
+#    delete:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: import_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Delete Import
+#  /dbs/{db_id}/imports/{import_id}/delimiters:
+#    put:
+#      tags:
+#        - Imports
+#      summary: Updates the import with file delimiters
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database that the import belongs to
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#        - name: import_id
+#          in: path
+#          description: ID of the import
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      requestBody:
+#        description: The delimiter settings
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/import_id_delimiters_body'
+#        required: true
+#      responses:
+#        "200":
+#          description: successful operation
+#  /dbs/{db_id}/imports/{import_id}/schedule:
+#    put:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: import_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/import_id_schedule_body'
+#            examples:
+#              set:
+#                summary: set
+#                value:
+#                  day: "1"
+#                  hour: 1,2
+#                  minute: "0"
+#              unset:
+#                summary: unset
+#                value:
+#                  day: "-1"
+#                  hour: "-1"
+#                  minute: "-1"
+#      responses:
+#        "200":
+#          description: Updated schedule in cron format
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                cron: 0 1 * * 1
+#  /dbs/{db_id}/imports/{import_id}/file_map:
+#    put:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: import_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/import_id_file_map_body'
+#            examples:
+#              set:
+#                summary: set
+#                value:
+#                  encoding: ""
+#                  separator: ','
+#                  enclosure: '"'
+#                  escaper: '"'
+#                  maps:
+#                    "6964": id
+#                    "757063": upc
+#                    "6164646974696f6e616c5f696d6167655f6c696e6b": additional_image_link
+#                    "617661696c6162696c697479": availability
+#                    "6272616e64": brand
+#                    "62756c6b5f70726963696e675f72756c6573": bulk_pricing_rules
+#                    "63617465676f72696573": categories
+#                    "63617465676f72795f696473": category_ids
+#                    "636f6e646974696f6e": condition
+#                    "636f73745f7072696365": cost_price
+#                    "637573746f6d5f6669656c6473": custom_fields
+#                    "6465736372697074696f6e": description
+#                    "66697865645f636f73745f7368697070696e675f7072696365": fixed_cost_shipping_price
+#                    "6774696e": gtin
+#                    "696d6167655f6c696e6b": image_link
+#                    "696e76656e746f72795f747261636b696e67": inventory_tracking
+#                    "69735f76697369626c65": is_visible
+#                    "6974656d5f67726f75705f6964": item_group_id
+#                    "6c696e6b": link
+#                    "6d706e": mpn
+#                    "6f7074696f6e73": options
+#                    "6f726465725f7175616e746974795f6d696e696d756d": order_quantity_minimum
+#                    "706172656e745f6964": parent_id
+#                    "7072696365": price
+#                    "70726f647563745f63616e5f62655f7075726368617365645f6f6e6c696e65": product_can_be_purchased_online
+#                    "70726f647563745f696d616765": product_image
+#                    "73616c655f7072696365": sale_price
+#                    "736b75": sku
+#                    "73746f636b": stock
+#                    "7469746c65": title
+#                    "76617269616e745f63616e5f62655f7075726368617365645f6f6e6c696e65": variant_can_be_purchased_online
+#                    "766964656f73": videos
+#                    "776569676874": weight
+#                    "6164646974696f6e616c5f696d6167655f6c696e6b5f6465736372697074696f6e": additional_image_link_description
+#                  ignore_join: []
+#                  name_based_maps: "1"
+#                  encode_source_file_keys: 1
+#                  clean_file_headers: "0"
+#                  file_type: delimited
+#      responses:
+#        "200":
+#          description: Updated file map
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                file_map: '{"encoding":"","separator":",","enclosure":"\"","escaper":"\"","maps":{"id":"id","upc":"upc","additional_image_link":"additional_image_link","availability":"availability","brand":"brand","bulk_pricing_rules":"bulk_pricing_rules","categories":"categories","category_ids":"category_ids","condition":"condition","cost_price":"cost_price","custom_fields":"custom_fields","description":"description","fixed_cost_shipping_price":"fixed_cost_shipping_price","gtin":"gtin","image_link":"image_link","inventory_tracking":"inventory_tracking","is_visible":"is_visible","item_group_id":"item_group_id","link":"link","mpn":"mpn","options":"options","order_quantity_minimum":"order_quantity_minimum","parent_id":"parent_id","price":"price","product_can_be_purchased_online":"product_can_be_purchased_online","product_image":"product_image","sale_price":"sale_price","sku":"sku","stock":"stock","title":"title","variant_can_be_purchased_online":"variant_can_be_purchased_online","videos":"videos","weight":"weight","additional_image_link_description":"additional_image_link_description"},"ignore_join":[]}'
+#                name_based_maps: 1
+#                clean_file_headers: 0
+#  /dbs/{db_id}/imports/{import_id}/auto_detect:
+#    get:
+#      tags:
+#        - Imports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: import_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Auto Detect Import
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                - field_separator: ','
+#                  enclosure_character: '"'
+#                  escape_character: '"'
+#                  priority: "1"
+#                  line_terminator: \n
+#                  actual_encoding: us-ascii
+#                  recommended_encoding: ""
+#                  enclosure_before_field: 2168
+#                  enclosure_after_field: 2168
+#                  enclosure_not_after_field: 0
+#                  enclosure_not_before_field: 0
+#                  average: 43
+#                  std: 0
+#                  line_count: 69
+#                - field_separator: ','
+#                  enclosure_character: '"'
+#                  escape_character: \n
+#                  priority: "2"
+#                  line_terminator: \n
+#                  actual_encoding: us-ascii
+#                  recommended_encoding: ""
+#                  enclosure_before_field: 2168
+#                  enclosure_after_field: 2168
+#                  enclosure_not_after_field: 9780
+#                  enclosure_not_before_field: 9780
+#                  average: 43
+#                  std: 0
+#                  line_count: 69
+#                - field_separator: ','
+#                  enclosure_character: '"'
+#                  escape_character: \
+#                  priority: "2"
+#                  line_terminator: \n
+#                  actual_encoding: us-ascii
+#                  recommended_encoding: ""
+#                  enclosure_before_field: 2168
+#                  enclosure_after_field: 2168
+#                  enclosure_not_after_field: 9780
+#                  enclosure_not_before_field: 9780
+#                  average: 43
+#                  std: 0
+#                  line_count: 69
+#  /dbs/{db_id}/db_fields:
+#    get:
+#      tags:
+#        - Database
+#      summary: Returns a list of mapped fields in the file map
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database that the import belongs to
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      responses:
+#        "200":
+#          description: successful operation
+#  /dbs/{db_id}/transformers:
+#    get:
+#      tags:
+#        - Transformers
+#      summary: Retrieves a list of transformers for a database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database that the import belongs to
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#        - name: field_name
+#          in: query
+#          description: The field that the transformer belongs to
+#          required: true
+#          style: form
+#          explode: true
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: successful operation
+#    post:
+#      tags:
+#        - Transformers
+#      summary: Add a new transformer to a database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      requestBody:
+#        description: The database parameters
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/db_id_transformers_body'
+#            example:
+#              field_name: availability
+#              selector: "true"
+#              transformer: nohtml( [availability] )
+#              export_id:
+#                - "0"
+#              enabled: 1
+#        required: true
+#      responses:
+#        "200":
+#          description: successful operation
+#          headers:
+#            Content-Type:
+#              style: simple
+#              explode: false
+#              schema:
+#                type: string
+#                example: text/plain
+#          content:
+#            text/plain:
+#              schema:
+#                type: string
+#              example: '{"id":"40","db_id":"136","export_id":"0","field_name":"availability","sort_order":"0","selector":"true","transformer":"nohtml( [availability] )","exports":"{\"export_ids\":[\"0\"],\"all_exports\":true}","enabled":"1","created_at":"2021-11-15 19:28:05"}'
+#    delete:
+#      tags:
+#        - Transformers
+#      summary: Deletes the transformer
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: The database id
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      responses:
+#        "200":
+#          description: successful operation
+#  /dbs/{db_id}/transformers/{transformer_id}:
+#    put:
+#      tags:
+#        - Transformers
+#      summary: Update a transformer to a database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#        - name: transformer_id
+#          in: path
+#          description: ID of the transformerr
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      requestBody:
+#        description: The database parameters
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/transformers_transformer_id_body'
+#            example:
+#              field_name: availability
+#              selector: "true"
+#              transformer: nohtml( [availability] )
+#              export_id:
+#                - "0"
+#              enabled: 1
+#        required: true
+#      responses:
+#        "200":
+#          description: successful operation
+#          headers:
+#            Content-Type:
+#              style: simple
+#              explode: false
+#              schema:
+#                type: string
+#                example: text/plain
+#          content:
+#            text/plain:
+#              schema:
+#                type: string
+#              example: '{"id":"40","db_id":"136","export_id":"0","field_name":"availability","sort_order":"0","selector":"true","transformer":"nohtml( [availability] )","exports":"{\"export_ids\":[\"0\"],\"all_exports\":true}","enabled":"1","created_at":"2021-11-15 19:28:05"}'
+#  /dbs/{db_id}/transformers/{transformer_id}/sort_order:
+#    put:
+#      tags:
+#        - Transformers
+#      summary: Update a transformer to a database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#        - name: transformer_id
+#          in: path
+#          description: ID of the transformerr
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      requestBody:
+#        description: The database parameters
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/transformer_id_sort_order_body'
+#            example:
+#              sort_order: "0"
+#        required: true
+#      responses:
+#        "200":
+#          description: successful operation
+#          headers:
+#            Content-Type:
+#              style: simple
+#              explode: false
+#              schema:
+#                type: string
+#                example: text/plain
+#          content:
+#            text/plain:
+#              schema:
+#                type: string
+#              example: '{"id":"40","db_id":"136","export_id":"0","field_name":"availability","sort_order":"0","selector":"true","transformer":"nohtml( [availability] )","exports":"{\"export_ids\":[\"0\"],\"all_exports\":true}","enabled":"1","created_at":"2021-11-15 19:28:05"}'
+#  /dbs/{db_id}/exports:
+#    get:
+#      tags:
+#        - Exports
+#      summary: Retrieves a list of exports for a database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database that the export belongs to
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      responses:
+#        "200":
+#          description: successful operation
+#    post:
+#      tags:
+#        - Exports
+#      summary: Adds an export to a database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          description: '(Required) '
+#          required: false
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#          example: commodo consequat reprehe
+#        - name: Content-Type
+#          in: header
+#          required: false
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#          example: application/json
+#        - name: db_id
+#          in: path
+#          description: (Required) ID of the database
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#          example: "69600146"
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              type: object
+#            examples:
+#              webhook:
+#                summary: webhook
+#                value:
+#                  name: consectetur
+#                  file_name: exercitation in m
+#                  protocol: webhook
+#                  protocol_info:
+#                    http_method: POST
+#                    http_url: http://imports.feedonomics.com/export/run_webhook.php
+#                    http_headers: 'Content-Type: application/json'
+#                    http_body: '{"data_url":"feedonomics::data_url::raw","protocol":"ftp","hostname":"FTP_HOSTNAME","username":"FTP_USERNAME","password":"FTP_PASSWORD","upload_path":"your/path/file_name.txt","client":"kenshoo"}'
+#                  host: ""
+#                  username: ""
+#                  password: ""
+#                  file_header: ""
+#                  file_footer: ""
+#                  threshold: 0
+#                  delimiter: tab
+#                  compression: ""
+#                  quoted_fields: 0
+#                  deduplicate_field_name: ""
+#                  export_format: delimited
+#                  include_column_names: 1
+#                  export_encoding: ""
+#                  enclosure: '"'
+#                  escape: \
+#                  strip_characters:
+#                    - \r
+#                    - \n
+#                    - \t
+#                  show_empty_tags: 0
+#                  use_cdata: 0
+#                  xml_write_document_tag: 0
+#                  zip_inner_file_name: ""
+#                  time_between_attempts: 1
+#                  max_attempts: 1
+#              ftp:
+#                summary: ftp
+#                value:
+#                  id: "72"
+#                  db_id: "136"
+#                  file_name: filename.txt
+#                  username: username
+#                  password: password
+#                  ftp_url: ""
+#                  export_selector: "true"
+#                  running: "0"
+#                  cxn_id: "0"
+#                  export_format: delimited
+#                  name: export_name
+#                  protocol: ftp
+#                  protocol_info: []
+#                  host: host.com
+#                  file_header: ""
+#                  file_footer: ""
+#                  threshold: "0"
+#                  include_column_names: "1"
+#                  json_minify_type: full
+#                  export_encoding: ""
+#                  delimiter: tab
+#                  compression: ""
+#                  quoted_fields: "0"
+#                  deduplicate_field_name: ""
+#                  timestamp: 0000-00-00 00:00:00
+#                  enclosure: ""
+#                  escape: ""
+#                  strip_characters: '["\r","\n","\t"]'
+#                  show_empty_tags: "0"
+#                  show_empty_parent_tags: "1"
+#                  xml_write_document_tag: "1"
+#                  use_cdata: "0"
+#                  zip_inner_file_name: ""
+#                  max_attempts: "3"
+#                  time_between_attempts: "30"
+#                  row_limit: "0"
+#                  row_sort: ""
+#                  row_order: ASC
+#                  legacy_workers: "1"
+#                  timeout: "1200"
+#                  blocked: "0"
+#                  export_index_field: ""
+#                  created_at: 2021-11-15 18:51:37
+#                  export_fields:
+#                    - id: "512"
+#                      export_id: "72"
+#                      field_name: additional_image_link
+#                      export_field_name: additional_image_link
+#                      sort_order: "0"
+#                    - id: "513"
+#                      export_id: "72"
+#                      field_name: availability
+#                      export_field_name: availability
+#                      sort_order: "0"
+#      responses:
+#        "200":
+#          description: OK
+#          headers:
+#            Content-Type:
+#              style: simple
+#              explode: false
+#              schema:
+#                type: string
+#                example: text/plain
+#          content:
+#            text/plain:
+#              schema:
+#                type: string
+#              example: '{"id":"72","db_id":"136","file_name":"filename.txt","username":"username","password":"password","ftp_url":"","export_selector":"true","running":"0","cxn_id":"0","export_format":"delimited","name":"export_name","protocol":"ftp","protocol_info":[],"host":"host.com","file_header":"","file_footer":"","threshold":"0","include_column_names":"1","json_minify_type":"full","export_encoding":"","delimiter":"tab","compression":"","quoted_fields":"0","deduplicate_field_name":"","timestamp":"0000-00-00 00:00:00","enclosure":"","escape":"","strip_characters":"[\"\\r\",\"\\n\",\"\\t\"]","show_empty_tags":"0","show_empty_parent_tags":"1","xml_write_document_tag":"1","use_cdata":"0","zip_inner_file_name":"","max_attempts":"3","time_between_attempts":"30","row_limit":"0","row_sort":"","row_order":"ASC","legacy_workers":"1","timeout":"1200","blocked":"0","export_index_field":"","created_at":"2021-11-15 18:51:37","export_fields":[{"id":"512","export_id":"72","field_name":"additional_image_link","export_field_name":"additional_image_link","sort_order":"0"},{"id":"513","export_id":"72","field_name":"availability","export_field_name":"availability","sort_order":"0"}]}'
+#  /dbs/{db_id}/exports/{export_id}:
+#    put:
+#      tags:
+#        - Exports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: export_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              type: object
+#              properties: {}
+#            example:
+#              name: export_name2
+#              file_name: filename.txt
+#              protocol: ftp
+#              protocol_info: []
+#              host: host.com
+#              username: username
+#              password: password
+#              export_fields:
+#                - id: "512"
+#                  export_id: "72"
+#                  field_name: additional_image_link
+#                  export_field_name: additional_image_link
+#                  sort_order: "0"
+#                - id: "513"
+#                  export_id: "72"
+#                  field_name: availability
+#                  export_field_name: availability
+#                  sort_order: "0"
+#              export_selector: "true"
+#              file_header: ""
+#              file_footer: ""
+#              threshold: "0"
+#              include_column_names: "1"
+#              json_minify_type: full
+#              export_encoding: ""
+#              delimiter: tab
+#              enclosure: ""
+#              escape: ""
+#              strip_characters:
+#                - "\r"
+#                - |2+
+#
+#                - "\t"
+#              show_empty_tags: "0"
+#              show_empty_parent_tags: "1"
+#              use_cdata: "0"
+#              xml_write_document_tag: "1"
+#              compression: ""
+#              zip_inner_file_name: ""
+#              quoted_fields: "0"
+#              sortable_fields:
+#                - name: Default Sort
+#                  value: ""
+#                  source: ""
+#                - name: additional_image_link
+#                  value: additional_image_link
+#                  source: Fields from Export Map
+#                - name: availability
+#                  value: availability
+#                  source: Fields from Export Map
+#              deduplicate_field_name: ""
+#              export_format: delimited
+#              timeout: "1200"
+#              max_attempts: "3"
+#              time_between_attempts: "30"
+#              row_sort: ""
+#              row_order: ASC
+#              row_limit: 0
+#              tags: []
+#              validate_custom_input: true
+#              export_index_field: ""
+#      responses:
+#        "200":
+#          description: Gets a list of extra import fields
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                id: "72"
+#                db_id: "136"
+#                file_name: filename.txt
+#                username: username
+#                password: password
+#                ftp_url: ""
+#                export_selector: "true"
+#                running: "0"
+#                cxn_id: "0"
+#                export_format: delimited
+#                name: export_name2
+#                protocol: ftp
+#                protocol_info: []
+#                host: host.com
+#                file_header: ""
+#                file_footer: ""
+#                threshold: "0"
+#                include_column_names: "1"
+#                json_minify_type: full
+#                export_encoding: ""
+#                delimiter: tab
+#                compression: ""
+#                quoted_fields: "0"
+#                deduplicate_field_name: ""
+#                timestamp: 0000-00-00 00:00:00
+#                enclosure: ""
+#                escape: ""
+#                strip_characters: '["\r","\n","\t"]'
+#                show_empty_tags: "0"
+#                show_empty_parent_tags: "1"
+#                xml_write_document_tag: "1"
+#                use_cdata: "0"
+#                zip_inner_file_name: ""
+#                max_attempts: "3"
+#                time_between_attempts: "30"
+#                row_limit: "0"
+#                row_sort: ""
+#                row_order: ASC
+#                legacy_workers: "0"
+#                timeout: "1200"
+#                blocked: "0"
+#                export_index_field: ""
+#                created_at: 2021-11-15 18:51:37
+#                export_fields:
+#                  - id: "569"
+#                    export_id: "72"
+#                    field_name: ""
+#                    export_field_name: product_can_be_purchased_online
+#                    sort_order: "0"
+#                  - id: "568"
+#                    export_id: "72"
+#                    field_name: price
+#                    export_field_name: price
+#                    sort_order: "0"
+#    delete:
+#      tags:
+#        - Exports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: export_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: Delete Export
+#  /dbs/{db_id}/exports/{export_id}/schedule:
+#    put:
+#      tags:
+#        - Exports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: export_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/export_id_schedule_body'
+#            examples:
+#              set:
+#                summary: set
+#                value:
+#                  day: '*'
+#                  hour: 1,2
+#                  minute: "0"
+#              unset:
+#                summary: unset
+#                value:
+#                  day: "-1"
+#                  hour: "-1"
+#                  minute: "-1"
+#      responses:
+#        "200":
+#          description: Updated schedule in cron format
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                cron: 0 1 * * 1
+#  /dbs/{db_id}/exports/{export_id}/run_export:
+#    put:
+#      tags:
+#        - Exports
+#      parameters:
+#        - name: db_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: export_id
+#          in: path
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: number
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/export_id_run_export_body'
+#      responses:
+#        "200":
+#          description: Export Ran
+#          content:
+#            application/json:
+#              schema: {}
+#              example:
+#                status: success
+#  /dbs/{db_id}/transformed_data/{export_id}:
+#    get:
+#      tags:
+#        - Data
+#      summary: Retrieves the transformed data for a database/export
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database to get transformed data from
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#        - name: export_id
+#          in: path
+#          description: The export ID to get transformed data from. Default to 0 for all
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#        - name: direction
+#          in: query
+#          description: Order direction, can be > or <
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: string
+#        - name: limit
+#          in: query
+#          description: How many results should be returned
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: number
+#        - name: offset
+#          in: query
+#          description: Offset used for paging
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: number
+#        - name: selector
+#          in: query
+#          description: the query selector to filter data by
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: successful operation
+#  /dbs/{db_id}/data:
+#    get:
+#      tags:
+#        - Data
+#      summary: Retrieves the raw data for a database
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database to get transformed data from
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#        - name: direction
+#          in: query
+#          description: Order direction, can be > or <
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: string
+#        - name: limit
+#          in: query
+#          description: How many results should be returned
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: number
+#        - name: offset
+#          in: query
+#          description: Offset used for paging
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: number
+#        - name: selector
+#          in: query
+#          description: the query selector to filter data by
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: string
+#      responses:
+#        "200":
+#          description: successful operation
+#  /dbs/{db_id}/move_db_to_db_group:
+#    post:
+#      tags:
+#        - DBGroups
+#      summary: Move Database to a group (and creates if necessary)
+#      parameters:
+#        - name: x-api-key
+#          in: header
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: string
+#        - name: db_id
+#          in: path
+#          description: ID of the database to move into the group
+#          required: true
+#          style: simple
+#          explode: false
+#          schema:
+#            type: integer
+#      requestBody:
+#        description: The db group parameters
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/db_id_move_db_to_db_group_body'
+#        required: true
+#      responses:
+#        "200":
+#          description: successful operation
+components:
+  schemas:
+#    login_body:
+#      required:
+#        - method
+#        - password
+#        - username
+#      type: object
+#      properties:
+#        username:
+#          type: string
+#        password:
+#          type: string
+#        method:
+#          type: string
+#          enum:
+#            - token
+#    inline_response_200:
+#      type: object
+#      properties:
+#        id:
+#          type: string
+#        account_name:
+#          type: string
+#        logo:
+#          type: string
+#          format: nullable
+#        highest_permission:
+#          type: string
+#        lowest_permission:
+#          type: string
+#        account_access_flag:
+#          type: string
+    bigcommerce_account_body:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the account to create
+#    account_id_dbs_body:
+#      required:
+#        - name
+#      type: object
+#      properties:
+#        name:
+#          type: string
+#          description: The name of the database
+#    db_id_extra_import_fields_body:
+#      required:
+#        - extra_fields
+#      type: object
+#      properties:
+#        extra_fields:
+#          type: array
+#          items:
+#            type: string
+#    import_id_delimiters_body:
+#      required:
+#        - enclosure
+#        - encoding
+#        - escaper
+#        - line_terminator
+#        - separator
+#      type: object
+#      properties:
+#        enclosure:
+#          type: string
+#          description: The character used to wrap each column
+#          default: '"'
+#          enum:
+#            - '"'
+#            - \n
+#        encoding:
+#          type: string
+#          description: The character encoding of the file
+#          default: utf8
+#          enum:
+#            - utf8
+#            - utf8mb4
+#            - latin1
+#            - utf16
+#        escaper:
+#          type: string
+#          description: The character used to escape characters
+#          default: '"'
+#          enum:
+#            - '"'
+#            - \
+#            - \n
+#        line_terminator:
+#          type: string
+#          description: The character used to define new lines
+#          default: \n
+#          enum:
+#            - \n
+#            - \r\n
+#            - \r
+#        separator:
+#          type: string
+#          description: The separator character between columns
+#          default: ','
+#          enum:
+#            - ','
+#            - \t
+#            - ;
+#            - '|'
+#            - null
+#    import_id_schedule_body:
+#      required:
+#        - day
+#        - hour
+#        - minute
+#      type: object
+#      properties:
+#        day:
+#          type: string
+#        hour:
+#          type: string
+#        minute:
+#          type: string
+#    import_id_file_map_body:
+#      required:
+#        - clean_file_headers
+#        - enclosure
+#        - encode_source_file_keys
+#        - encoding
+#        - escaper
+#        - file_type
+#        - ignore_join
+#        - maps
+#        - name_based_maps
+#        - separator
+#      type: object
+#      properties:
+#        encoding:
+#          type: string
+#        separator:
+#          type: string
+#        enclosure:
+#          type: string
+#        escaper:
+#          type: string
+#        maps:
+#          type: object
+#        ignore_join:
+#          type: object
+#        name_based_maps:
+#          type: string
+#        encode_source_file_keys:
+#          type: string
+#        clean_file_headers:
+#          type: string
+#        file_type:
+#          type: string
+#    db_id_transformers_body:
+#      required:
+#        - enabled
+#        - export_id
+#        - field_name
+#        - selector
+#        - transformer
+#      type: object
+#      properties:
+#        enabled:
+#          type: boolean
+#          description: whether the transformer is executed
+#        field_name:
+#          type: string
+#          description: the name of the field to transform
+#        selector:
+#          type: string
+#          description: The transformer selector ('if')
+#        transformer:
+#          type: string
+#          description: The transformer output ('then')
+#        export_id:
+#          type: array
+#          description: The export ID to apply the transformer to (empty if all)
+#          items:
+#            type: integer
+#    transformers_transformer_id_body:
+#      required:
+#        - enabled
+#        - export_id
+#        - field_name
+#        - selector
+#        - transformer
+#      type: object
+#      properties:
+#        enabled:
+#          type: boolean
+#          description: whether the transformer is executed
+#        field_name:
+#          type: string
+#          description: the name of the field to transform
+#        selector:
+#          type: string
+#          description: The transformer selector ('if')
+#        transformer:
+#          type: string
+#          description: The transformer output ('then')
+#        export_id:
+#          type: array
+#          description: The export ID to apply the transformer to (empty if all)
+#          items:
+#            type: integer
+#    transformer_id_sort_order_body:
+#      required:
+#        - sort_order
+#      type: object
+#      properties:
+#        sort_order:
+#          type: integer
+#          description: target position for transformer
+#    export_id_schedule_body:
+#      required:
+#        - day
+#        - hour
+#        - minute
+#      type: object
+#      properties:
+#        day:
+#          type: string
+#        hour:
+#          type: string
+#        minute:
+#          type: string
+#    export_id_run_export_body:
+#      type: object
+#      properties:
+#        local:
+#          type: boolean
+#    db_id_move_db_to_db_group_body:
+#      required:
+#        - source_db_group_id
+#        - target_db_group_id
+#        - target_db_group_name
+#      type: object
+#      properties:
+#        source_db_group_id:
+#          type: integer
+#          description: The current database db_group_id (or 0)
+#        target_db_group_id:
+#          type: integer
+#          description: The DB Group ID to assign (-1 if new group)
+#        target_db_group_name:
+#          type: string
+#          description: If creating a new DB group then this is the name (empty if target_db_group_id > 0)
